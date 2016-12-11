@@ -1,0 +1,77 @@
+
+main.c,43
+int main(int argc, char *argv[])main3,18
+
+Makefile,0
+
+write.c,42
+int main(int argc,char *argv[])main6,37
+
+init.c,334
+int my_write(void *buff, int n, int offset)my_write4,66
+int initiate_file_system()initiate_file_system12,249
+int init_superblock()init_superblock27,646
+int init_db_bmap()init_db_bmap47,1404
+int init_inode_bmap()init_inode_bmap56,1643
+int init_inode_table()init_inode_table66,1897
+int init_root_dir()init_root_dir72,2025
+
+createDisk.c,49
+int createDisk(char *file_name)createDisk5,108
+
+fs.h,2620
+#define FS_SIZE FS_SIZE7,118
+#define BS BS8,151
+typedef struct superblock{superblock12,196
+  unsigned int total_no_inodes;total_no_inodes13,223
+  unsigned int no_free_inodes;no_free_inodes14,255
+  unsigned int no_free_blocks;no_free_blocks15,286
+  unsigned int next_free_inode_index; //index in inode table listnext_free_inode_index16,317
+  unsigned int inode_bmap_offset; // start position of inode bmapinode_bmap_offset17,383
+  unsigned int data_block_bmap_offset; // start position of data_block  bmapdata_block_bmap_offset18,449
+  unsigned int inode_table_offset; // start position of inode_tableinode_table_offset19,526
+  unsigned int data_block_offset; // start position of data_blockdata_block_offset20,594
+  unsigned int next_free_data_block_offset;next_free_data_block_offset21,660
+}sb;sb22,704
+typedef struct db_bmap_struct {db_bmap_struct25,742
+  char db_bmap_index[FS_SIZE/BS];db_bmap_index26,774
+}db_bmap;db_bmap27,808
+typedef struct inode_bmap_struct {inode_bmap_struct30,847
+  char inode_bmap_index[FS_SIZE/BS];inode_bmap_index31,882
+}inode_bmap;inode_bmap32,919
+typedef struct data_block_struct{data_block_struct35,957
+  char data[BS]; //block size buffer stringdata36,991
+}data_block;data_block37,1035
+typedef struct si_block_struct{si_block_struct40,1084
+  unsigned int db_index[BS/(sizeof(int *))]; // 4096/4 = 1024 adressdb_index41,1116
+}si_block;si_block42,1185
+typedef struct inode_struct{inode_struct45,1221
+  char file_type; // file_type: d - directory | f - filefile_type46,1250
+  unsigned int size; // size of file or directorysize47,1307
+  unsigned int direct_block_offset; //address of direct block, will typecasted on f or d;direct_block_offset48,1357
+  unsigned int single_indirect_block_offset; // address of single indirect blocksingle_indirect_block_offset49,1447
+}inode;inode50,1528
+typedef struct inode_table_struct{inode_table_struct53,1565
+  inode inode_index[FS_SIZE/BS]; //FS_SIZE/Block_size;inode_index54,1600
+}inode_table;inode_table55,1655
+typedef struct dir_record_struct{dir_record_struct58,1694
+  unsigned int inode_index;inode_index59,1728
+  char file_name[28];file_name60,1756
+}dir_record;dir_record61,1778
+typedef struct dir_struct {dir_struct64,1812
+  dir_record child[BS/sizeof(dir_record)]; //first index = current, second index = parentchild65,1840
+}dir;dir66,1930
+int fd;fd71,2043
+sb *sb_object; sb_object72,2051
+db_bmap *db_bmap_object; db_bmap_object73,2067
+inode_bmap *inode_bmap_object; inode_bmap_object74,2093
+inode_table *inode_table_object; inode_table_object75,2125
+
+api.h,0
+
+get.c,247
+int my_read(void *buff, int n,int offset)my_read3,18
+sb *get_super_block()get_super_block10,217
+db_bmap *get_db_bmap()get_db_bmap17,349
+inode_bmap *get_inode_bmap()get_inode_bmap24,532
+inode_table *get_inode_table()get_inode_table31,734
